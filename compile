@@ -1,0 +1,24 @@
+
+docname=$1
+bibfile=${2:-"main"}
+
+mkdir output
+rm -rf .tmp-compiling
+mkdir .tmp-compiling
+
+cd .tmp-compiling
+
+cp ../${bibfile}.bib .
+
+pdflatex ../$docname.tex
+bibtex $docname
+pdflatex ../$docname.tex
+pdflatex ../$docname.tex
+
+cp $docname.pdf ../output
+
+cd ..
+rm -rf .tmp-compiling
+
+open output/$docname.pdf
+osascript -e 'activate application "Emacs"'
